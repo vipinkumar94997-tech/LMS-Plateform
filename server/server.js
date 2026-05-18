@@ -59,6 +59,8 @@ app.get("/", (req, res) => {
 
 app.post("/api/courses", createCourse);
 
+app.use("/api/users", userRoutes);
+
 // ================= SERVER =================
 const PORT = process.env.PORT || 5000;
 
