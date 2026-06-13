@@ -21,9 +21,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex bg-slate-50 min-h-screen">
+    <div className="min-h-screen bg-slate-50">
       <Sidebar />
-      <main className="flex-1 p-8">
+      <main className="lg:ml-64 w-[calc(100%-16rem)] p-4 sm:p-6 lg:p-10">
         <h2 className="text-3xl font-bold text-slate-800 mb-8">
           Personal Profile
         </h2>

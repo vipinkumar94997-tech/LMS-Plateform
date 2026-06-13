@@ -1,149 +1,137 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   LayoutDashboard,
   BookOpen,
-  Settings,
-  LogOut,
   GraduationCap,
   Users,
+  User,
+  Settings,
+  LogOut,
+  Menu,
+  X,
 } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [open, setOpen] = useState(false);
 
-  // Initial state ko khali rakha hai taaki crash na ho
-  const [user, setUser] = useState({
-    name: "",
-    role: "",
-  });
-
-  useEffect(() => {
-    const fetchUserData = () => {
-      try {
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) {
-          const parsedUser = JSON.parse(savedUser);
-          setUser({
-            name: parsedUser.name || "User",
-            role: parsedUser.role || "Guest",
-          });
-        }
-      } catch (err) {
-        console.error("Error loading user:", err);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
-  const allMenuItems = [
+  const menuItems = [
     {
-      icon: <LayoutDashboard size={20} />,
-      label: "Dashboard",
+      name: "Dashboard",
       path: "/dashboard",
-      roles: ["admin", "teacher", "student"],
+      icon: <LayoutDashboard size={20} />,
     },
     {
+      name: "My Courses",
+      path: "/my-courses",
       icon: <BookOpen size={20} />,
-      label: "My Courses",
-      path: "/courses",
-      roles: ["admin", "teacher", "student"],
     },
     {
-      icon: <GraduationCap size={20} />,
-      label: "Teachers",
+      name: "Teachers",
       path: "/teachers",
-      roles: ["admin"],
+      icon: <GraduationCap size={20} />,
     },
     {
-      icon: <Users size={20} />,
-      label: "Students",
+      name: "Students",
       path: "/students",
-      roles: ["admin", "teacher"],
+      icon: <Users size={20} />,
+    },
+    {
+      name: "Profile",
+      path: "/profile",
+      icon: <User size={20} />,
+    },
+    {
+      name: "Settings",
+      path: "/settings",
+      icon: <Settings size={20} />,
     },
   ];
 
-  // Role check: Agar role nahi mila toh default "student" ke items dikhao
-  const currentRole = user.role.toLowerCase() || "student";
-  const menuItems = allMenuItems.filter((item) =>
-    item.roles.includes(currentRole),
-  );
-
-  const handleLogout = () => {
-    if (window.confirm("Are you sure you want to logout?")) {
-      localStorage.clear();
-      window.location.href = "/login"; // Force redirect
-    }
-  };
-
   return (
-    <div className="h-screen w-64 bg-slate-900 text-white flex flex-col p-4 sticky top-0 border-r border-slate-800">
-      <h1 className="text-2xl font-bold mb-10 text-indigo-400 px-2 tracking-tight text-left">
-        EduTech LMS
-      </h1>
+    <>
+      {/* MOBILE TOPBAR */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-slate-900 z-50 flex items-center justify-between px-4 border-b border-slate-800">
+        <h1 className="text-white text-xl font-black">LMS Panel</h1>
 
-      <nav className="flex-1">
-        {menuItems.map((item, index) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <div
+        <button onClick={() => setOpen(true)}>
+          <Menu size={28} className="text-white" />
+        </button>
+      </div>
+
+      {/* BACKDROP */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
+
+      {/* SIDEBAR */}
+      <aside
+        className={`
+          fixed top-0 left-0 h-screen w-64 bg-slate-900 text-white z-50
+          border-r border-slate-800
+          transform transition-transform duration-300
+
+          ${open ? "translate-x-0" : "-translate-x-full"}
+
+          lg:translate-x-0
+        `}
+      >
+        {/* LOGO */}
+        <div className="flex items-center justify-between p-5 border-b border-slate-800">
+          <h1 className="text-2xl font-black">LMS Panel</h1>
+
+          <button className="lg:hidden" onClick={() => setOpen(false)}>
+            <X size={26} />
+          </button>
+        </div>
+
+        {/* MENU */}
+        <div className="flex flex-col gap-2 p-4">
+          {menuItems.map((item, index) => (
+            <NavLink
               key={index}
-              onClick={() => navigate(item.path)}
-              className={`flex items-center gap-4 p-3 mb-2 rounded-xl cursor-pointer transition-all duration-200 ${
-                isActive
-                  ? "bg-indigo-600 shadow-lg shadow-indigo-900/50 text-white"
-                  : "hover:bg-slate-800 text-slate-400 hover:text-white"
-              }`}
+              to={item.path}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                `
+                flex items-center gap-3 px-4 py-3 rounded-2xl
+                font-semibold transition-all duration-200
+
+                ${
+                  isActive
+                    ? "bg-indigo-600 text-white"
+                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                }
+              `
+              }
             >
               {item.icon}
-              <span className="font-medium">{item.label}</span>
-            </div>
-          );
-        })}
-      </nav>
-
-      <div className="border-t border-slate-800 pt-4 space-y-2">
-        <div
-          onClick={() => navigate("/settings")}
-          className={`flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all ${
-            location.pathname === "/settings"
-              ? "text-indigo-400 bg-slate-800/30"
-              : "text-slate-400 hover:text-white"
-          }`}
-        >
-          <Settings size={20} />
-          <span className="font-medium text-left">Settings</span>
+              {item.name}
+            </NavLink>
+          ))}
         </div>
 
-        {/* --- DYNAMIC PROFILE CARD --- */}
-        <div
-          onClick={() => navigate("/profile")}
-          className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-2xl border border-slate-700 cursor-pointer hover:border-indigo-500 transition-all"
-        >
-          <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center font-bold border border-indigo-400 uppercase text-lg">
-            {user.name ? user.name[0] : "U"}
-          </div>
-          <div className="flex-1 overflow-hidden text-left">
-            <p className="text-sm font-bold truncate">
-              {user.name || "Loading..."}
-            </p>
-            <p className="text-[10px] uppercase tracking-wider text-indigo-400 font-black">
-              {user.role || "Admin"}
-            </p>
-          </div>
+        {/* LOGOUT */}
+        <div className="absolute bottom-5 left-0 w-full px-4">
+          <button
+            className="
+              w-full flex items-center gap-3
+              px-4 py-3 rounded-2xl
+              bg-red-500/10 text-red-400
+              hover:bg-red-500 hover:text-white
+              transition-all font-semibold
+            "
+          >
+            <LogOut size={20} />
+            Logout
+          </button>
         </div>
-
-        <div
-          onClick={handleLogout}
-          className="flex items-center gap-4 p-3 hover:bg-red-500/10 rounded-xl cursor-pointer text-red-400 transition-all font-bold"
-        >
-          <LogOut size={20} />
-          <span className="font-medium">Logout</span>
-        </div>
-      </div>
-    </div>
+      </aside>
+    </>
   );
 };
 
