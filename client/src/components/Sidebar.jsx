@@ -89,8 +89,6 @@ const Sidebar = () => {
           </button>
         </div>
 
-        {/* MENU */}
-        {/* MENU */}
         <div className="flex flex-col justify-between h-[calc(100%-120px)] p-4">
           {/* TOP MENU */}
           <div className="flex flex-col gap-2">
@@ -119,7 +117,7 @@ const Sidebar = () => {
           </div>
 
           {/* BOTTOM MENU */}
-          <div className="flex flex-col gap-2 mb-20">
+          <div className="flex flex-col gap-2 mb-3">
             {menuItems.slice(4).map((item, index) => (
               <NavLink
                 key={index}
