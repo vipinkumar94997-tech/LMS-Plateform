@@ -13,6 +13,13 @@ import {
 
 import { NavLink } from "react-router-dom";
 
+const handleLogout = () => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+
+  window.location.href = "/login";
+};
+
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
 
@@ -146,13 +153,14 @@ const Sidebar = () => {
         {/* LOGOUT */}
         <div className="absolute bottom-5 left-0 w-full px-4">
           <button
+            onClick={handleLogout}
             className="
-              w-full flex items-center gap-3
-              px-4 py-3 rounded-2xl
-              bg-red-500/10 text-red-400
-              hover:bg-red-500 hover:text-white
-              transition-all font-semibold
-            "
+    w-full flex items-center gap-3
+    px-4 py-3 rounded-2xl
+    bg-red-500/10 text-red-400
+    hover:bg-red-500 hover:text-white
+    transition-all font-semibold
+  "
           >
             <LogOut size={20} />
             Logout
