@@ -90,29 +90,59 @@ const Sidebar = () => {
         </div>
 
         {/* MENU */}
-        <div className="flex flex-col gap-2 p-4">
-          {menuItems.map((item, index) => (
-            <NavLink
-              key={index}
-              to={item.path}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                `
-                flex items-center gap-3 px-4 py-3 rounded-2xl
-                font-semibold transition-all duration-200
+        {/* MENU */}
+        <div className="flex flex-col justify-between h-[calc(100%-120px)] p-4">
+          {/* TOP MENU */}
+          <div className="flex flex-col gap-2">
+            {menuItems.slice(0, 4).map((item, index) => (
+              <NavLink
+                key={index}
+                to={item.path}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `
+          flex items-center gap-3 px-4 py-3 rounded-2xl
+          font-semibold transition-all duration-200
 
-                ${
-                  isActive
-                    ? "bg-indigo-600 text-white"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+          ${
+            isActive
+              ? "bg-indigo-600 text-white"
+              : "text-slate-300 hover:bg-slate-800 hover:text-white"
+          }
+        `
                 }
-              `
-              }
-            >
-              {item.icon}
-              {item.name}
-            </NavLink>
-          ))}
+              >
+                {item.icon}
+                {item.name}
+              </NavLink>
+            ))}
+          </div>
+
+          {/* BOTTOM MENU */}
+          <div className="flex flex-col gap-2 mb-20">
+            {menuItems.slice(4).map((item, index) => (
+              <NavLink
+                key={index}
+                to={item.path}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `
+          flex items-center gap-3 px-4 py-3 rounded-2xl
+          font-semibold transition-all duration-200
+
+          ${
+            isActive
+              ? "bg-indigo-600 text-white"
+              : "text-slate-300 hover:bg-slate-800 hover:text-white"
+          }
+        `
+                }
+              >
+                {item.icon}
+                {item.name}
+              </NavLink>
+            ))}
+          </div>
         </div>
 
         {/* LOGOUT */}
