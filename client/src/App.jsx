@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/course/:id" element={<CourseDetail />} />
-        <Route path="/courses" element={<MyCourses />} />
+        <Route path="/my-courses" element={<MyCourses />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
 
@@ -35,7 +35,6 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         {/* Note: Neeche waale duplicate routes ko aap hata sakte hain agar zaroorat na ho */}
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<Login />} />
       </Routes>
     </Router>

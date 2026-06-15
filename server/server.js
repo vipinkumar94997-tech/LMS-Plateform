@@ -1,44 +1,16 @@
-// require("dotenv").config();
-// const express = require("express");
-// const cors = require("cors");
-// const connectDB = require("./config/db");
-// const courseRoutes = require("./routes/courseRoutes");
+import dotenv from "dotenv";
+dotenv.config();
 
-// const app = express();
+import express from "express";
+import cors from "cors";
 
-// // Middleware
-// app.use(express.json());
-// app.use(cors());
+import connectDB from "./config/db.js";
 
-// // Routes
-// app.use("/api/users", require("./routes/userRoutes"));
-// app.use("/api/courses", require("./routes/courseRoutes")); // Yeh line courses ko handle karegi
+import dashboardRoutes from "./routes/dashboardRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import courseRoutes from "./routes/courseRoutes.js";
 
-// // Database Connection
-// connectDB();
-
-// // Basic Route for Testing
-// app.get("/", (req, res) => {
-//   res.send("LMS API is running...");
-// });
-
-// app.use("/course", courseRoutes);
-
-// // Port Configuration
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT} 🚀`));
-
-require("dotenv").config();
-
-const express = require("express");
-const cors = require("cors");
-
-const connectDB = require("./config/db");
-
-// Routes
-const userRoutes = require("./routes/userRoutes");
-const courseRoutes = require("./routes/courseRoutes");
-const { createCourse } = require("./controllers/courseController");
+import { createCourse } from "./controllers/courseController.js";
 
 const app = express();
 
@@ -57,9 +29,17 @@ app.get("/", (req, res) => {
   res.send("LMS API is running...");
 });
 
-app.post("/api/courses", createCourse);
+// Dashboard Routes
+app.use("/api/dashboard", dashboardRoutes);
 
+// User Routes
 app.use("/api/users", userRoutes);
+
+// Course Routes
+app.use("/api/courses", courseRoutes);
+
+// Create Course
+app.post("/api/courses", createCourse);
 
 // ================= SERVER =================
 const PORT = process.env.PORT || 5000;

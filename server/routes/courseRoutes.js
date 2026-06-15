@@ -1,12 +1,10 @@
-// const express = require("express");
-// const router = express.Router();
+import express from "express";
+const router = express.Router();
 
-// const { getCourses, createCourse } = require("../controllers/courseController");
+import { getCourses, createCourse } from "../controllers/courseController.js";
 
-// // GET all courses
-// router.get("/course", getCourses);
+router.get("/", getCourses);
 
-// // CREATE new course
-// router.post("/course", createCourse);
+router.post("/", createCourse);
 
-// module.exports = router;
+export default router;
