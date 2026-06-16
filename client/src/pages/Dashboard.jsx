@@ -98,12 +98,13 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 overflow-x-hidden">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main Content */}
-      <main className="lg:ml-64 w-[calc(100%-16rem)] p-4 sm:p-6 lg:p-10">
+      <main className="lg:ml-64 w-full lg:w-[calc(100%-16rem)] p-4 sm:p-6 lg:p-10">
+        {" "}
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800">
@@ -114,7 +115,6 @@ const Dashboard = () => {
             Welcome back! Here’s your LMS analytics overview.
           </p>
         </div>
-
         {/* DASHBOARD STATS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
           {/* Total Courses */}
@@ -183,7 +183,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
         {/* GRAPH SECTION */}
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
           <div className="mb-6">
@@ -194,7 +193,7 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="w-full h-100">
+          <div className="w-full h-100 overflow-x-auto">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />

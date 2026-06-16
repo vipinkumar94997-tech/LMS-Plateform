@@ -1,605 +1,292 @@
-// import { useState } from "react";
-// import {
-//   Plus,
-//   UserCheck,
-//   LogOut,
-//   User as UserIcon,
-//   Users,
-//   ChevronDown,
-//   ChevronUp,
-// } from "lucide-react";
-// import AddUserModal from "../../components/users/AddUserModal.jsx";
-// import Sidebar from "../../components/Sidebar";
-
-// const Teachers = () => {
-//   const [currentUser] = useState({
-//     role: "teacher",
-//     name: "Dr. Arvind Kumar",
-//     email: "arvind@example.com",
-//   });
-
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [selectedTeacher, setSelectedTeacher] = useState(null);
-
-//   // --- TOGGLE STATE ---
-//   const [showStudents, setShowStudents] = useState(false);
-
-//   const [teachers] = useState([
-//     {
-//       id: 1,
-//       name: "Dr. Arvind Kumar",
-//       email: "arvind@example.com",
-//       subject: "Web Development",
-//       status: "Active",
-//     },
-//     {
-//       id: 2,
-//       name: "Ms. Neha Sharma",
-//       email: "neha@example.com",
-//       subject: "UI/UX Design",
-//       status: "Active",
-//     },
-//   ]);
-
-//   // Mock Students Data
-//   const students = [
-//     { id: 101, name: "Rahul Verma", course: "React JS", batch: "Evening" },
-//     { id: 102, name: "Sneha Gupta", course: "Node JS", batch: "Morning" },
-//     { id: 103, name: "Amit Singh", course: "MySQL", batch: "Evening" },
-//   ];
-
-//   const isAdmin = currentUser.role === "admin";
-
-//   return (
-//     <div className="p-6 min-h-screen bg-slate-50">
-//       {/* 1. TOP BAR */}
-//       <div className="flex flex-wrap justify-between items-center bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-8 gap-4">
-//         <div className="flex items-center gap-3">
-//           <div className="bg-indigo-600 p-2 rounded-lg text-white shadow-md">
-//             <UserIcon size={20} />
-//           </div>
-//           <div>
-//             <h2 className="text-sm font-bold text-slate-800 leading-tight">
-//               {currentUser.name}
-//             </h2>
-//             <span className="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-//               {currentUser.role}
-//             </span>
-//           </div>
-//         </div>
-//         <button
-//           onClick={() => alert("Logging out...")}
-//           className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold hover:bg-red-600 hover:text-white transition-all border border-red-100 group"
-//         >
-//           <LogOut
-//             size={18}
-//             className="group-hover:rotate-12 transition-transform"
-//           />
-//           <span>Logout</span>
-//         </button>
-//       </div>
-
-//       {/* 2. HEADER */}
-//       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-//         <div>
-//           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-//             {isAdmin ? "Teacher Management" : "My Dashboard"}
-//           </h1>
-//           <p className="text-slate-500 text-sm">
-//             {isAdmin
-//               ? "Manage faculty members"
-//               : "Review your profile and students"}
-//           </p>
-//         </div>
-//         {isAdmin && (
-//           <button
-//             onClick={() => {
-//               setSelectedTeacher(null);
-//               setIsModalOpen(true);
-//             }}
-//             className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl flex items-center gap-2 shadow-lg font-semibold transition-all"
-//           >
-//             <Plus size={20} strokeWidth={3} /> Add New Teacher
-//           </button>
-//         )}
-//       </div>
-
-//       {/* 3. STATS CARDS WITH TOGGLE */}
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-//         <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
-//           <div className="bg-indigo-100 p-3 rounded-xl text-indigo-600">
-//             <UserCheck size={24} />
-//           </div>
-//           <div>
-//             <p className="text-slate-500 text-sm font-medium">Total Faculty</p>
-//             <p className="text-2xl font-bold text-slate-900">
-//               {teachers.length}
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* --- CLICKABLE CARD --- */}
-//         <div
-//           onClick={() => setShowStudents(!showStudents)}
-//           className={`p-5 rounded-2xl shadow-sm border transition-all group cursor-pointer flex items-center justify-between ${showStudents ? "bg-emerald-50 border-emerald-300" : "bg-white border-slate-200 hover:border-emerald-300"}`}
-//         >
-//           <div className="flex items-center gap-4">
-//             <div
-//               className={`p-3 rounded-xl transition-colors ${showStudents ? "bg-emerald-600 text-white" : "bg-emerald-100 text-emerald-600 group-hover:scale-110"}`}
-//             >
-//               <Users size={24} />
-//             </div>
-//             <div>
-//               <p className="text-slate-500 text-sm font-medium">
-//                 Active Students
-//               </p>
-//               <p className="text-sm font-bold text-emerald-600">
-//                 {showStudents ? "Hide List" : "Click to View"}
-//               </p>
-//             </div>
-//           </div>
-//           {showStudents ? (
-//             <ChevronUp className="text-emerald-600" />
-//           ) : (
-//             <ChevronDown className="text-slate-300" />
-//           )}
-//         </div>
-//       </div>
-
-//       {/* --- CONDITIONAL STUDENTS LIST --- */}
-//       {showStudents && (
-//         <div className="mb-8 animate-in slide-in-from-top duration-300">
-//           <div className="bg-white rounded-2xl shadow-md border border-emerald-100 overflow-hidden">
-//             <div className="bg-emerald-600 p-4">
-//               <h3 className="text-white font-bold flex items-center gap-2">
-//                 <Users size={18} /> My Active Students
-//               </h3>
-//             </div>
-//             <div className="overflow-x-auto">
-//               <table className="w-full text-left">
-//                 <thead className="bg-emerald-50 text-emerald-700 text-xs uppercase font-bold">
-//                   <tr>
-//                     <th className="p-4 text-center w-16">ID</th>
-//                     <th className="p-4">Student Name</th>
-//                     <th className="p-4">Enrolled Course</th>
-//                     <th className="p-4">Batch</th>
-//                   </tr>
-//                 </thead>
-//                 <tbody className="divide-y divide-slate-100">
-//                   {students.map((s) => (
-//                     <tr
-//                       key={s.id}
-//                       className="hover:bg-emerald-50/50 transition-colors"
-//                     >
-//                       <td className="p-4 text-center font-bold text-slate-400">
-//                         {s.id}
-//                       </td>
-//                       <td className="p-4 font-semibold text-slate-800">
-//                         {s.name}
-//                       </td>
-//                       <td className="p-4">
-//                         <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg text-xs font-bold">
-//                           {s.course}
-//                         </span>
-//                       </td>
-//                       <td className="p-4 text-slate-500 text-sm">{s.batch}</td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </table>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-
-//       {/* 4. TABLE SECTION */}
-//       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-//         <div className="p-4 border-b border-slate-100 bg-slate-50/50">
-//           <h3 className="font-bold text-slate-700">
-//             {isAdmin ? "All Registered Instructors" : "My Professional Profile"}
-//           </h3>
-//         </div>
-//         <div className="overflow-x-auto">
-//           <table className="w-full text-left">
-//             <thead className="bg-slate-50 border-b border-slate-200">
-//               <tr>
-//                 <th className="p-4 font-bold text-slate-600 text-sm uppercase">
-//                   Instructor
-//                 </th>
-//                 <th className="p-4 font-bold text-slate-600 text-sm uppercase">
-//                   Contact
-//                 </th>
-//                 <th className="p-4 font-bold text-slate-600 text-sm uppercase">
-//                   Expertise
-//                 </th>
-//                 {isAdmin && (
-//                   <th className="p-4 font-bold text-slate-600 text-sm uppercase text-right">
-//                     Action
-//                   </th>
-//                 )}
-//               </tr>
-//             </thead>
-//             <tbody className="divide-y divide-slate-100">
-//               {teachers
-//                 .filter((t) => (isAdmin ? true : t.email === currentUser.email))
-//                 .map((t) => (
-//                   <tr
-//                     key={t.id}
-//                     className="hover:bg-slate-50/80 transition-colors"
-//                   >
-//                     <td className="p-4">
-//                       <div className="flex items-center gap-3">
-//                         <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border border-indigo-100">
-//                           {t.name[0]}
-//                         </div>
-//                         <span className="font-semibold text-slate-800">
-//                           {t.name}
-//                         </span>
-//                       </div>
-//                     </td>
-//                     <td className="p-4 text-slate-600 text-sm">{t.email}</td>
-//                     <td className="p-4 text-slate-600 font-medium">
-//                       {t.subject}
-//                     </td>
-//                     {isAdmin && (
-//                       <td className="p-4 text-right">
-//                         <button
-//                           onClick={() => {
-//                             setSelectedTeacher(t);
-//                             setIsModalOpen(true);
-//                           }}
-//                           className="text-indigo-600 hover:text-indigo-800 font-bold text-sm bg-indigo-50 px-4 py-1.5 rounded-lg border border-indigo-100"
-//                         >
-//                           Edit
-//                         </button>
-//                       </td>
-//                     )}
-//                   </tr>
-//                 ))}
-//             </tbody>
-//           </table>
-//         </div>
-//       </div>
-
-//       <AddUserModal
-//         isOpen={isModalOpen}
-//         onClose={() => {
-//           setIsModalOpen(false);
-//           setSelectedTeacher(null);
-//         }}
-//         onAdd={(data) => console.log(data)}
-//         roleType="teacher"
-//         initialData={selectedTeacher}
-//       />
-//     </div>
-//   );
-// };
-
-// export default Teachers;
-
 import { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import {
   Plus,
   UserCheck,
   LogOut,
-  User as UserIcon,
+  User,
   Users,
   ChevronDown,
   ChevronUp,
   UserPlus,
 } from "lucide-react";
-import AddUserModal from "../../components/users/AddUserModal.jsx";
+import AddUserModal from "../../components/users/AddUserModal";
 
 const Teachers = () => {
-  const [currentUser] = useState({
+  const [showStudents, setShowStudents] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalRole, setModalRole] = useState("teacher");
+
+  // ✅ localStorage data
+  const [teachers, setTeachers] = useState(
+    JSON.parse(localStorage.getItem("teachers")) || [
+      {
+        id: 1,
+        name: "Dr. Arvind Kumar",
+        email: "arvind@example.com",
+        subject: "Web Development",
+      },
+      {
+        id: 2,
+        name: "Neha Sharma",
+        email: "neha@example.com",
+        subject: "UI/UX Design",
+      },
+    ],
+  );
+
+  const [students, setStudents] = useState(
+    JSON.parse(localStorage.getItem("students")) || [
+      {
+        id: 101,
+        name: "Rahul Verma",
+        course: "React JS",
+        batch: "Evening",
+      },
+      {
+        id: 102,
+        name: "Sneha Gupta",
+        course: "Node JS",
+        batch: "Morning",
+      },
+    ],
+  );
+
+  const currentUser = {
     role: "teacher",
     name: "Dr. Arvind Kumar",
-    email: "arvind@example.com",
-  });
+  };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
-  const [showStudents, setShowStudents] = useState(false);
+  // ✅ modal open
+  const openModal = (role) => {
+    setModalRole(role);
+    setIsModalOpen(true);
+  };
 
-  const [teachers] = useState([
-    {
-      id: 1,
-      name: "Dr. Arvind Kumar",
-      email: "arvind@example.com",
-      subject: "Web Development",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Ms. Neha Sharma",
-      email: "neha@example.com",
-      subject: "UI/UX Design",
-      status: "Active",
-    },
-  ]);
+  // ✅ add user
+  const handleAdd = (data) => {
+    if (modalRole === "teacher") {
+      const updatedTeachers = [
+        ...teachers,
+        {
+          id: Date.now(),
+          name: data.name,
+          email: data.email,
+          subject: data.subject || "New Subject",
+        },
+      ];
 
-  const students = [
-    { id: 101, name: "Rahul Verma", course: "React JS", batch: "Evening" },
-    { id: 102, name: "Sneha Gupta", course: "Node JS", batch: "Morning" },
-    { id: 103, name: "Amit Singh", course: "MySQL", batch: "Evening" },
-  ];
+      setTeachers(updatedTeachers);
+      localStorage.setItem("teachers", JSON.stringify(updatedTeachers));
+    } else {
+      const updatedStudents = [
+        ...students,
+        {
+          id: students.length + 101,
+          name: data.name,
+          course: data.course || "New Course",
+          batch:
+            new Date().getHours() < 12
+              ? "Morning"
+              : new Date().getHours() < 17
+                ? "Afternoon"
+                : "Evening",
+        },
+      ];
 
-  const isAdmin = currentUser.role === "admin";
+      setStudents(updatedStudents);
+      localStorage.setItem("students", JSON.stringify(updatedStudents));
+    }
+
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="flex min-h-screen bg-slate-50 overflow-x-hidden">
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
-      <main className="lg:ml-64 w-[calc(100%-16rem)] p-4 sm:p-6 lg:p-10">
-        {" "}
-        {/* TOP BAR */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 gap-4">
+      <main className="flex-1 lg:ml-64 p-4 sm:p-6 lg:p-10">
+        {/* Top */}
+        <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col sm:flex-row justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
-            <div className="bg-indigo-600 p-2 rounded-lg text-white shadow-md">
-              <UserIcon size={20} />
+            <div className="bg-indigo-600 text-white p-2 rounded-lg">
+              <User size={20} />
             </div>
 
             <div>
-              <h2 className="text-sm font-bold text-slate-800 leading-tight">
-                {currentUser.name}
-              </h2>
+              <h2 className="font-bold text-slate-800">{currentUser.name}</h2>
 
-              <span className="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+              <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full uppercase font-bold">
                 {currentUser.role}
               </span>
             </div>
           </div>
 
-          <button
-            onClick={() => alert("Logging out...")}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold hover:bg-red-600 hover:text-white transition-all border border-red-100 group"
-          >
-            <LogOut
-              size={18}
-              className="group-hover:rotate-12 transition-transform"
-            />
-            <span>Logout</span>
+          <button className="bg-red-50 text-red-600 px-4 py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-red-600 hover:text-white transition">
+            <LogOut size={18} />
+            Logout
           </button>
         </div>
-        {/* HEADER */}
-        {/* HEADER */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
+
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              {isAdmin ? "Teacher Management" : "My Dashboard"}
+            <h1 className="text-3xl font-bold text-slate-900">
+              Teacher Management
             </h1>
 
-            <p className="text-slate-500 text-sm mt-1">
-              {isAdmin
-                ? "Manage faculty members"
-                : "Review your profile and students"}
-            </p>
+            <p className="text-slate-500 text-sm">Manage teachers & students</p>
           </div>
 
-          <div className="flex gap-3 flex-wrap">
-            {/* Add Student Button */}
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-200 transition-all font-bold active:scale-95">
-              <UserPlus size={20} />
-              Add New Student
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={() => openModal("student")}
+              className="bg-indigo-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 font-bold hover:bg-indigo-700"
+            >
+              <UserPlus size={18} />
+              Add Student
             </button>
 
-            {/* Admin Button */}
-            {isAdmin && (
-              <button
-                onClick={() => {
-                  setSelectedTeacher(null);
-                  setIsModalOpen(true);
-                }}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg font-semibold transition-all"
-              >
-                <Plus size={20} strokeWidth={3} />
-                Add New Teacher
-              </button>
-            )}
+            <button
+              onClick={() => openModal("teacher")}
+              className="bg-indigo-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 font-bold hover:bg-indigo-700"
+            >
+              <Plus size={18} />
+              Add Teacher
+            </button>
           </div>
         </div>
-        {/* STATS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
-            <div className="bg-indigo-100 p-3 rounded-xl text-indigo-600">
-              <UserCheck size={24} />
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-sm p-5 flex items-center gap-4">
+            <div className="bg-indigo-100 p-3 rounded-xl">
+              <UserCheck className="text-indigo-600" />
             </div>
 
             <div>
-              <p className="text-slate-500 text-sm font-medium">
-                Total Faculty
-              </p>
+              <p className="text-slate-500 text-sm">Total Faculty</p>
 
-              <p className="text-2xl font-bold text-slate-900">
-                {teachers.length}
-              </p>
+              <h2 className="text-2xl font-bold">{teachers.length}</h2>
             </div>
           </div>
 
-          {/* Students Toggle */}
           <div
             onClick={() => setShowStudents(!showStudents)}
-            className={`p-5 rounded-2xl shadow-sm border transition-all group cursor-pointer flex items-center justify-between ${
-              showStudents
-                ? "bg-emerald-50 border-emerald-300"
-                : "bg-white border-slate-200 hover:border-emerald-300"
-            }`}
+            className="bg-white rounded-2xl shadow-sm p-5 flex items-center justify-between cursor-pointer"
           >
             <div className="flex items-center gap-4">
-              <div
-                className={`p-3 rounded-xl transition-colors ${
-                  showStudents
-                    ? "bg-emerald-600 text-white"
-                    : "bg-emerald-100 text-emerald-600 group-hover:scale-110"
-                }`}
-              >
-                <Users size={24} />
+              <div className="bg-emerald-100 p-3 rounded-xl">
+                <Users className="text-emerald-600" />
               </div>
 
               <div>
-                <p className="text-slate-500 text-sm font-medium">
-                  Active Students
-                </p>
+                <p className="text-slate-500 text-sm">Students</p>
 
-                <p className="text-sm font-bold text-emerald-600">
-                  {showStudents ? "Hide List" : "Click to View"}
+                <p className="text-emerald-600 font-bold text-sm">
+                  {showStudents ? "Hide" : "View"}
                 </p>
               </div>
             </div>
 
-            {showStudents ? (
-              <ChevronUp className="text-emerald-600" />
-            ) : (
-              <ChevronDown className="text-slate-300" />
-            )}
+            {showStudents ? <ChevronUp /> : <ChevronDown />}
           </div>
         </div>
-        {/* STUDENTS LIST */}
+
+        {/* Students */}
         {showStudents && (
-          <div className="mb-8 animate-in slide-in-from-top duration-300">
-            <div className="bg-white rounded-2xl shadow-md border border-emerald-100 overflow-hidden">
-              <div className="bg-emerald-600 p-4">
-                <h3 className="text-white font-bold flex items-center gap-2">
-                  <Users size={18} />
-                  My Active Students
-                </h3>
-              </div>
+          <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-8">
+            <div className="bg-emerald-600 text-white font-bold p-4">
+              Active Students
+            </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-left min-w-[600px]">
-                  <thead className="bg-emerald-50 text-emerald-700 text-xs uppercase font-bold">
-                    <tr>
-                      <th className="p-4 text-center w-16">ID</th>
-                      <th className="p-4">Student Name</th>
-                      <th className="p-4">Enrolled Course</th>
-                      <th className="p-4">Batch</th>
-                    </tr>
-                  </thead>
-
-                  <tbody className="divide-y divide-slate-100">
-                    {students.map((s) => (
-                      <tr
-                        key={s.id}
-                        className="hover:bg-emerald-50/50 transition-colors"
-                      >
-                        <td className="p-4 text-center font-bold text-slate-400">
-                          {s.id}
-                        </td>
-
-                        <td className="p-4 font-semibold text-slate-800">
-                          {s.name}
-                        </td>
-
-                        <td className="p-4">
-                          <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg text-xs font-bold">
-                            {s.course}
-                          </span>
-                        </td>
-
-                        <td className="p-4 text-slate-500 text-sm">
-                          {s.batch}
-                        </td>
-                      </tr>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-150">
+                <thead className="bg-emerald-50 text-emerald-700">
+                  <tr>
+                    {["ID", "Name", "Course", "Batch", "Action"].map((item) => (
+                      <th key={item} className="p-4 text-center text-sm">
+                        {item}
+                      </th>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {students.map((s) => (
+                    <tr key={s.id} className="hover:bg-slate-50">
+                      <td className="p-4 text-center">{s.id}</td>
+                      <td className="p-4 text-center">{s.name}</td>
+                      <td className="p-4 text-center">{s.course}</td>
+                      <td className="p-4 text-center">{s.batch}</td>
+
+                      <td className="p-4 text-center">
+                        <button
+                          onClick={() => {
+                            const updatedStudents = students.filter(
+                              (student) => student.id !== s.id,
+                            );
+
+                            setStudents(updatedStudents);
+
+                            localStorage.setItem(
+                              "students",
+                              JSON.stringify(updatedStudents),
+                            );
+                          }}
+                          className="bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-600 hover:text-white transition"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
-        {/* TEACHERS TABLE */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          <div className="p-4 border-b border-slate-100 bg-slate-50/50">
-            <h3 className="font-bold text-slate-700">
-              {isAdmin
-                ? "All Registered Instructors"
-                : "My Professional Profile"}
-            </h3>
-          </div>
+
+        {/* Teachers */}
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="p-4 font-bold text-slate-800">Teachers List</div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left min-w-[700px]">
-              <thead className="bg-slate-50 border-b border-slate-200">
+            <table className="w-full min-w-175">
+              <thead className="bg-slate-100">
                 <tr>
-                  <th className="p-4 font-bold text-slate-600 text-sm uppercase">
-                    Instructor
-                  </th>
-
-                  <th className="p-4 font-bold text-slate-600 text-sm uppercase">
-                    Contact
-                  </th>
-
-                  <th className="p-4 font-bold text-slate-600 text-sm uppercase">
-                    Expertise
-                  </th>
-
-                  {isAdmin && (
-                    <th className="p-4 font-bold text-slate-600 text-sm uppercase text-right">
-                      Action
+                  {["Name", "Email", "Subject"].map((item) => (
+                    <th
+                      key={item}
+                      className="p-4 text-center text-sm text-slate-700"
+                    >
+                      {item}
                     </th>
-                  )}
+                  ))}
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-slate-100">
-                {teachers
-                  .filter((t) =>
-                    isAdmin ? true : t.email === currentUser.email,
-                  )
-                  .map((t) => (
-                    <tr
-                      key={t.id}
-                      className="hover:bg-slate-50/80 transition-colors"
-                    >
-                      <td className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border border-indigo-100">
-                            {t.name[0]}
-                          </div>
-
-                          <span className="font-semibold text-slate-800">
-                            {t.name}
-                          </span>
-                        </div>
+              <tbody>
+                {teachers.map((t) => (
+                  <tr key={t.id} className="hover:bg-slate-50">
+                    {[t.name, t.email, t.subject].map((item, i) => (
+                      <td key={i} className="p-4 text-center break-words">
+                        {item}
                       </td>
-
-                      <td className="p-4 text-slate-600 text-sm">{t.email}</td>
-
-                      <td className="p-4 text-slate-600 font-medium">
-                        {t.subject}
-                      </td>
-
-                      {isAdmin && (
-                        <td className="p-4 text-right">
-                          <button
-                            onClick={() => {
-                              setSelectedTeacher(t);
-                              setIsModalOpen(true);
-                            }}
-                            className="text-indigo-600 hover:text-indigo-800 font-bold text-sm bg-indigo-50 px-4 py-1.5 rounded-lg border border-indigo-100"
-                          >
-                            Edit
-                          </button>
-                        </td>
-                      )}
-                    </tr>
-                  ))}
+                    ))}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
+
+        {/* Modal */}
         <AddUserModal
           isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedTeacher(null);
-          }}
-          onAdd={(data) => console.log(data)}
-          roleType="teacher"
-          initialData={selectedTeacher}
+          onClose={() => setIsModalOpen(false)}
+          roleType={modalRole}
+          onAdd={handleAdd}
         />
       </main>
     </div>
