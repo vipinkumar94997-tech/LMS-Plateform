@@ -99,10 +99,8 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 overflow-x-hidden">
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
       <main className="lg:ml-64 w-full lg:w-[calc(100%-16rem)] p-4 sm:p-6 lg:p-10">
         {" "}
         {/* Header */}

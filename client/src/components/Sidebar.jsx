@@ -12,10 +12,14 @@ import {
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
 
 const handleLogout = () => {
   localStorage.removeItem("user");
   localStorage.removeItem("token");
+  navigate("/login");
 
   window.location.href = "/login";
 };
@@ -59,7 +63,7 @@ const Sidebar = () => {
   return (
     <>
       {/* MOBILE TOPBAR */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-slate-900 z-50 flex items-center justify-between px-4 border-b border-slate-800">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16   bg-slate-900 z-50 flex items-center justify-between px-4 border-b border-slate-800">
         <h1 className="text-white text-xl font-black">LMS Panel</h1>
 
         <button onClick={() => setOpen(true)}>
@@ -155,7 +159,7 @@ const Sidebar = () => {
           <button
             onClick={handleLogout}
             className="
-    w-full flex items-center gap-3
+     w-full flex items-center gap-3
     px-4 py-3 rounded-2xl
     bg-red-500/10 text-red-400
     hover:bg-red-500 hover:text-white
