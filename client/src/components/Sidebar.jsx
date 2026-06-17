@@ -12,14 +12,10 @@ import {
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
-const navigate = useNavigate();
 
 const handleLogout = () => {
   localStorage.removeItem("user");
   localStorage.removeItem("token");
-  navigate("/login");
 
   window.location.href = "/login";
 };
@@ -159,7 +155,7 @@ const Sidebar = () => {
           <button
             onClick={handleLogout}
             className="
-     w-full flex items-center gap-3
+    w-full flex items-center gap-3
     px-4 py-3 rounded-2xl
     bg-red-500/10 text-red-400
     hover:bg-red-500 hover:text-white

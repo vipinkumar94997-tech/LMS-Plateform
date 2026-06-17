@@ -11,8 +11,17 @@ import {
   UserPlus,
 } from "lucide-react";
 import AddUserModal from "../../components/users/AddUserModal";
+import { useNavigate } from "react-router-dom";
 
 const Teachers = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   const [showStudents, setShowStudents] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRole, setModalRole] = useState("teacher");
@@ -122,7 +131,10 @@ const Teachers = () => {
             </div>
           </div>
 
-          <button className="bg-red-50 text-red-600 px-4 py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-red-600 hover:text-white transition">
+          <button
+            onClick={handleLogout}
+            className="bg-red-50 text-red-600 px-4 py-2 rounded-xl flex items-center justify-center gap-2 hover:bg-red-600 hover:text-white transition"
+          >
             <LogOut size={18} />
             Logout
           </button>

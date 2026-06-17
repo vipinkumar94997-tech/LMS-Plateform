@@ -16,7 +16,7 @@ import {
 } from "recharts";
 
 const Dashboard = () => {
-  const [courses, setCourses] = useState([]);
+  const [, setCourses] = useState([]);
 
   const [stats, setStats] = useState({
     totalCourses: 0,
@@ -28,7 +28,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        // COURSES FETCH
+        // COURSES
         const courseResponse = await axios.get(
           "http://localhost:5000/api/courses",
         );
@@ -42,7 +42,7 @@ const Dashboard = () => {
           }));
         }
 
-        // USERS FETCH
+        // USERS
         const usersResponse = await axios.get(
           "http://localhost:5000/api/users",
         );
@@ -66,18 +66,17 @@ const Dashboard = () => {
             ...prev,
             totalStudents: students,
             totalTeachers: teachers,
-            activeUsers: activeUsers,
+            activeUsers,
           }));
         }
       } catch (err) {
-        console.error("API Error:", err);
+        console.error("Dashboard Error:", err);
       }
     };
 
     fetchDashboardData();
   }, []);
 
-  // CHART DATA
   const chartData = [
     {
       name: "Courses",
@@ -97,13 +96,14 @@ const Dashboard = () => {
     },
   ];
 
+  const colors = ["#4f46e5", "#10b981", "#f97316", "#ec4899"];
+
   return (
     <div className="min-h-screen bg-slate-50 overflow-x-hidden">
       <Sidebar />
 
       <main className="lg:ml-64 w-full lg:w-[calc(100%-16rem)] p-4 sm:p-6 lg:p-10">
-        {" "}
-        {/* Header */}
+        {/* HEADER */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800">
             Dashboard Overview
@@ -113,9 +113,9 @@ const Dashboard = () => {
             Welcome back! Here’s your LMS analytics overview.
           </p>
         </div>
-        {/* DASHBOARD STATS */}
+
+        {/* STATS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
-          {/* Total Courses */}
           <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex items-center gap-4">
             <div className="bg-indigo-100 text-indigo-600 p-4 rounded-2xl">
               <BookOpen size={28} />
@@ -132,7 +132,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Students */}
           <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex items-center gap-4">
             <div className="bg-emerald-100 text-emerald-600 p-4 rounded-2xl">
               <Users size={28} />
@@ -149,7 +148,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Teachers */}
           <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex items-center gap-4">
             <div className="bg-orange-100 text-orange-600 p-4 rounded-2xl">
               <GraduationCap size={28} />
@@ -166,7 +164,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Active Users */}
           <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex items-center gap-4">
             <div className="bg-pink-100 text-pink-600 p-4 rounded-2xl">
               <Activity size={28} />
@@ -181,7 +178,8 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        {/* GRAPH SECTION */}
+
+        {/* GRAPH */}
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-slate-800">LMS Analytics</h2>
@@ -191,25 +189,22 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="w-full h-100 overflow-x-auto">
+          <div className="w-full h-[450px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" radius={[10, 10, 0, 0]}>
-                  {chartData.map((entry, index) => {
-                    const colors = ["#4f46e2", "#10b975", "#f97314", "#ec4895"];
 
-                    return (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={colors[index % colors.length]}
-                      />
-                    );
-                  })}
-                </Bar>{" "}
+                <XAxis dataKey="name" />
+
+                <YAxis />
+
+                <Tooltip />
+
+                <Bar dataKey="value" radius={[10, 10, 0, 0]}>
+                  {chartData.map((item, index) => (
+                    <Cell key={index} fill={colors[index]} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
