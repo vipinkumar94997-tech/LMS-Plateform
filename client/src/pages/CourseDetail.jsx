@@ -14,7 +14,6 @@ const CourseDetail = () => {
     const getCourseData = async () => {
       try {
         setLoading(true);
-        // APNI API KA URL YAHAN DALO (Example: http://localhost:5000/api/courses/${id})
 
         const response = await axios.get(
           `http://localhost:5000/api/courses/${id}`,
@@ -94,7 +93,7 @@ const CourseDetail = () => {
           </div>
 
           {/* Right Side Status Card */}
-          <div className="bg-white p-8 rounded-[32px] h-fit border border-slate-200 shadow-sm">
+          <div className="bg-white p-8 rounded-4xl h-fit border border-slate-200 shadow-sm">
             <h3 className="text-xl font-bold mb-6 text-slate-800">
               Course Status
             </h3>

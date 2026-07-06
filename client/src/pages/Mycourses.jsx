@@ -1,5 +1,6 @@
+import { Navigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import { Search, Filter, PlayCircle } from "lucide-react";
+import { Search, Filter, PlayCircle, Plus } from "lucide-react";
 
 const MyCourses = () => {
   const enrolledCourses = [
@@ -78,6 +79,14 @@ const MyCourses = () => {
               <Filter size={18} />
               Filter
             </button>
+
+            <button
+              onClick={() => Navigate("/add-course")}
+              className="bg-emerald-700 text-white px-3 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-700"
+            >
+              <Plus size={18} />
+              Add Course
+            </button>
           </div>
         </div>
 
@@ -111,7 +120,7 @@ const MyCourses = () => {
                   {course.title}
                 </h3>
 
-                <p className="text-slate-500 text-sm mt-1 break-words">
+                <p className="text-slate-500 text-sm mt-1 wrape-break-words">
                   Instructor: {course.tutor}
                 </p>
 

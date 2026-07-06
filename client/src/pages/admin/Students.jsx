@@ -121,14 +121,14 @@ const Students = () => {
         </div>
         {/* TABLE */}
         <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
-          <table className="w-full min-w-175">
+          <table className="w-full table-fixed ">
             <thead>
               <tr className="text-slate-500 text-sm">
-                <th className="p-4">Student</th>
-                <th>Course</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th className="text-right">Actions</th>
+                <th className="p-4 text-left w-[25%]">Student</th>
+                <th className="text-left w-[20%]">Course</th>
+                <th className="text-left w-[20%]">Date</th>
+                <th className="text-left w-[15%]">Status</th>
+                <th className=" w-[10%] ">Actions</th>
               </tr>
             </thead>
 

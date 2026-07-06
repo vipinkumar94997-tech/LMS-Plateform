@@ -29,16 +29,12 @@ app.get("/", (req, res) => {
   res.send("LMS API is running...");
 });
 
-// Dashboard Routes
 app.use("/api/dashboard", dashboardRoutes);
 
-// User Routes
 app.use("/api/users", userRoutes);
 
-// Course Routes
 app.use("/api/courses", courseRoutes);
 
-// Create Course
 app.post("/api/courses", createCourse);
 
 // ================= SERVER =================

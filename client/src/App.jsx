@@ -13,6 +13,7 @@ import AdminTeachers from "./pages/admin/teachers";
 import AdminStudents from "./pages/admin/students";
 import TeacherMyStudents from "./pages/teacher/mystudents";
 import CourseDetail from "./pages/CourseDetail";
+import AddCourse from "./pages/AddCourse";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/course/:id" element={<CourseDetail />} />
         <Route path="/my-courses" element={<MyCourses />} />
+        <Route path="/add-course" element={<AddCourse />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
 
