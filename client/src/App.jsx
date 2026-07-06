@@ -14,6 +14,7 @@ import AdminStudents from "./pages/admin/students";
 import TeacherMyStudents from "./pages/teacher/mystudents";
 import CourseDetail from "./pages/CourseDetail";
 import AddCourse from "./pages/AddCourse";
+import TestPage from "./pages/Testpage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/add-course" element={<AddCourse />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/test" element={<TestPage />} />
 
         {/* --- Naye Routes Start --- */}
         <Route path="/teachers" element={<AdminTeachers />} />
