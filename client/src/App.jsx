@@ -1,4 +1,3 @@
-// import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -8,7 +7,6 @@ import MyCourses from "./pages/MyCourses";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 
-// Naye Imports (Teachers aur Students ke liye)
 import AdminTeachers from "./pages/admin/teachers";
 import AdminStudents from "./pages/admin/students";
 import TeacherMyStudents from "./pages/teacher/mystudents";
@@ -28,17 +26,14 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/test" element={<TestPage />} />
 
-        {/* --- Naye Routes Start --- */}
         <Route path="/teachers" element={<AdminTeachers />} />
         <Route path="/students" element={<AdminStudents />} />
         <Route path="/teacher/my-students" element={<TeacherMyStudents />} />
-        {/* --- Naye Routes End --- */}
 
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
-        {/* Note: Neeche waale duplicate routes ko aap hata sakte hain agar zaroorat na ho */}
         <Route path="/" element={<Login />} />
       </Routes>
     </Router>

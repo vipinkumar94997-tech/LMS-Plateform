@@ -26,7 +26,6 @@ const Teachers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRole, setModalRole] = useState("teacher");
 
-  // ✅ localStorage data
   const [teachers, setTeachers] = useState(
     JSON.parse(localStorage.getItem("teachers")) || [
       {
@@ -66,13 +65,11 @@ const Teachers = () => {
     name: "Dr. Arvind Kumar",
   };
 
-  // ✅ modal open
   const openModal = (role) => {
     setModalRole(role);
     setIsModalOpen(true);
   };
 
-  // ✅ add user
   const handleAdd = (data) => {
     if (modalRole === "teacher") {
       const updatedTeachers = [
@@ -140,7 +137,6 @@ const Teachers = () => {
           </button>
         </div>
 
-        {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">
@@ -169,7 +165,6 @@ const Teachers = () => {
           </div>
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
           <div className="bg-white rounded-2xl shadow-sm p-5 flex items-center gap-4">
             <div className="bg-indigo-100 p-3 rounded-xl">
@@ -205,7 +200,6 @@ const Teachers = () => {
           </div>
         </div>
 
-        {/* Students */}
         {showStudents && (
           <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-8">
             <div className="bg-emerald-600 text-white font-bold p-4">
@@ -259,7 +253,6 @@ const Teachers = () => {
           </div>
         )}
 
-        {/* Teachers */}
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <div className="p-4 font-bold text-slate-800">Teachers List</div>
 
@@ -282,7 +275,7 @@ const Teachers = () => {
                 {teachers.map((t) => (
                   <tr key={t.id} className="hover:bg-slate-50">
                     {[t.name, t.email, t.subject].map((item, i) => (
-                      <td key={i} className="p-4 text-center break-words">
+                      <td key={i} className="p-4 text-center wrap-break-words">
                         {item}
                       </td>
                     ))}
@@ -293,7 +286,6 @@ const Teachers = () => {
           </div>
         </div>
 
-        {/* Modal */}
         <AddUserModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}

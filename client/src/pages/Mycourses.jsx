@@ -1,13 +1,14 @@
 ﻿import Sidebar from "../components/Sidebar";
-import { useState } from "react";
-import { Search, Filter, PlayCircle, Plus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, Filter, PlayCircle, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const MyCourses = () => {
   const navigate = useNavigate();
-  const [setShowFilter] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
-  const enrolledCourses = [
+  const defaultCourses = [
     {
       id: 1,
       title: "Fullstack Web Development",
@@ -45,6 +46,64 @@ const MyCourses = () => {
     },
   ];
 
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+
+  const loadCourses = () => {
+    const customCourses = JSON.parse(
+      localStorage.getItem("customCourses") || "[]",
+    );
+    const hiddenDefaultIds = JSON.parse(
+      localStorage.getItem("hiddenDefaultIds") || "[]",
+    );
+
+    const visibleDefaults = defaultCourses.filter(
+      (course) => !hiddenDefaultIds.includes(course.id),
+    );
+
+    setEnrolledCourses([...visibleDefaults, ...customCourses]);
+  };
+
+  useEffect(() => {
+    loadCourses();
+  }, []);
+
+  const handleDelete = (courseId) => {
+    const confirmDelete = window.confirm(
+      "Kya aap sach me ye course delete karna chahte ho?",
+    );
+    if (!confirmDelete) return;
+
+    const isDefaultCourse = defaultCourses.some((c) => c.id === courseId);
+
+    if (isDefaultCourse) {
+      const hiddenDefaultIds = JSON.parse(
+        localStorage.getItem("hiddenDefaultIds") || "[]",
+      );
+      hiddenDefaultIds.push(courseId);
+      localStorage.setItem(
+        "hiddenDefaultIds",
+        JSON.stringify(hiddenDefaultIds),
+      );
+    } else {
+      const customCourses = JSON.parse(
+        localStorage.getItem("customCourses") || "[]",
+      );
+      const updatedCustomCourses = customCourses.filter(
+        (c) => c.id !== courseId,
+      );
+      localStorage.setItem(
+        "customCourses",
+        JSON.stringify(updatedCustomCourses),
+      );
+    }
+
+    loadCourses();
+  };
+
+  const filteredCourses = enrolledCourses.filter((course) =>
+    course.title.toLowerCase().includes(searchText.toLowerCase()),
+  );
+
   return (
     <div className="min-h-screen bg-slate-50 overflow-x-hidden">
       <Sidebar />
@@ -67,6 +126,8 @@ const MyCourses = () => {
               />
               <input
                 type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search courses..."
                 className="w-full sm:w-72 pl-11 pr-4 py-3 rounded-2xl border border-slate-200 bg-white outline-none focus:ring-4 focus:ring-indigo-100"
               />
@@ -91,10 +152,10 @@ const MyCourses = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-6">
-          {enrolledCourses.map((course) => (
+          {filteredCourses.map((course) => (
             <div
               key={course.id}
-              className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all group"
+              className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all group relative"
             >
               <div className="h-52 overflow-hidden relative">
                 <img
@@ -105,6 +166,14 @@ const MyCourses = () => {
                 <div className="absolute top-4 right-4 bg-white/90 px-3 py-1 rounded-full text-xs font-bold text-indigo-600">
                   {course.progress}% Complete
                 </div>
+
+                <button
+                  onClick={() => handleDelete(course.id)}
+                  className="absolute top-4 left-4 bg-white/90 hover:bg-red-500 hover:text-white text-red-500 p-2 rounded-full shadow transition-all"
+                  title="Delete course"
+                >
+                  <Trash2 size={16} />
+                </button>
               </div>
               <div className="p-5">
                 <span className="text-[10px] font-bold bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md uppercase">
@@ -136,6 +205,12 @@ const MyCourses = () => {
               </div>
             </div>
           ))}
+
+          {filteredCourses.length === 0 && (
+            <p className="text-slate-500 col-span-full text-center py-10">
+              Koi course nahi mila.
+            </p>
+          )}
         </div>
       </main>
     </div>
